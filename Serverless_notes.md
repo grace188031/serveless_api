@@ -112,3 +112,6 @@ exports.handler = (event,context,callback) => {
     };
 ```
 
+# TESTING THE LAMBDA CODE WHERE YOU WANT TO PUT ITEMS IN DYNAMODB
+
+![Alt text](image.png)
