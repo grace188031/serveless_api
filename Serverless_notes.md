@@ -4,8 +4,10 @@
 
 # Getting Stated with Dynamo DB
 
-**Lmabda Configuration**
+**Lambda Configuration**
+This is just for the first example where in you will call dynamo db function
 
+```javascript
 const AWS = require('aws-sdk')
 const dynamodb = new AWS.dynamodb({region:'us-west-2', apiVersion: '2012-08-10'});
 
@@ -14,6 +16,7 @@ exports.handler = (event,context,callback) => {
     const age= event.age;
     callback(null, age * 2);
 };
+```
 
 # HOW TO PUT ITEMS in the dynamo db created
 
