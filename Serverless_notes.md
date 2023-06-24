@@ -27,6 +27,8 @@ const dynamodb = new AWS.dynamodb({region:'us-west-2', apiVersion: '2012-08-10'}
 
 ```
 
+
+**Example Code**
 ```javascript
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.dynamodb({region:'us-west-2', apiVersion: '2012-08-10'});
