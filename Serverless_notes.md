@@ -19,10 +19,10 @@ exports.handler = (event,context,callback) => {
 
 There must be Table and Item *please see the dynamodb.putitem function*
 
-//
 /* This example adds a new item to the Music table. */
 
- var params = {
+```javascript
+var params = {
   Item: {
    "AlbumTitle": {
      S: "Somewhat Famous"
@@ -49,15 +49,13 @@ There must be Table and Item *please see the dynamodb.putitem function*
    }
    */
  });
- //
+```
 
  **Hence this is the final code in the lambda for putting data**
 
-
-`const AWS = require('aws-sdk')
-
+```javascript
+const AWS = require('aws-sdk')
 const dynamodb = new AWS.dynamodb({region:'us-west-2', apiVersion: '2012-08-10'});
-
 exports.handler = (event,context,callback) => {
     
     const params = {
@@ -86,6 +84,6 @@ exports.handler = (event,context,callback) => {
             callback(null, data)
         }
             });
-    };`
-
+    };
+```
 
