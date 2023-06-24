@@ -126,3 +126,12 @@ You can search "IAM" role in AWS
 
 We need to attach new policy
 ![Alt text](image-3.png)
+
+*Once you tested it, it will return empty result because you havent configured yet the desired return*
+
+![Alt text](image-4.png)
+
+*When you got to the dynamodb again, you will see that there was added item in the table, this was executed when you tested you lamnda function which puts data in the dynamodb table*
+![Alt text](image-5.png)
+
+# Using Api Gateway(Request) Data for Item Creation
