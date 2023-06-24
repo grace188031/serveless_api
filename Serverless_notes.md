@@ -31,7 +31,7 @@ const dynamodb = new AWS.dynamodb({region:'us-west-2', apiVersion: '2012-08-10'}
 **Example Code**
 ```javascript
 const AWS = require('aws-sdk');
-const dynamodb = new AWS.dynamodb({region:'us-west-2', apiVersion: '2012-08-10'});
+const dynamodb = new AWS.DynamoDB({region:'us-west-2', apiVersion: '2012-08-10'});
 
 exports.handler = (event,context,callback) => {
     console.log(event);
@@ -80,12 +80,12 @@ var params = {
 
 ```javascript
 const AWS = require('aws-sdk')
-const dynamodb = new AWS.dynamodb({region:'us-west-2', apiVersion: '2012-08-10'});
+const dynamodb = new AWS.DynamoDB({region:'us-west-2', apiVersion: '2012-08-10'});
 exports.handler = (event,context,callback) => {
     
     const params = {
         Item: {
-            "UserID": {
+            "UserId": {
                 S: "grace-adsdasw"
             },
             "Age": {
@@ -115,3 +115,14 @@ exports.handler = (event,context,callback) => {
 # TESTING THE LAMBDA CODE WHERE YOU WANT TO PUT ITEMS IN DYNAMODB
 
 ![Alt text](image-1.png)
+
+You will see that access denied. 
+
+# Setting Permission Right in DynamoDB
+
+You can search "IAM" role in AWS
+![Alt text](image.png)
+![Alt text](image-2.png)
+
+We need to attach new policy
+![Alt text](image-3.png)
