@@ -52,7 +52,10 @@ There must be Table and Item *please see the dynamodb.putitem function*
  //
 
  **Hence this is the final code in the lambda for putting data**
- const AWS = require('aws-sdk')
+
+
+`const AWS = require('aws-sdk')
+
 const dynamodb = new AWS.dynamodb({region:'us-west-2', apiVersion: '2012-08-10'});
 
 exports.handler = (event,context,callback) => {
@@ -83,6 +86,6 @@ exports.handler = (event,context,callback) => {
             callback(null, data)
         }
             });
-    };
+    };`
 
 
