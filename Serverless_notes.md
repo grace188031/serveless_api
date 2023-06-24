@@ -7,8 +7,28 @@
 **Lambda Configuration**
 This is just for the first example where in you will call dynamo db function
 
+*Dont forget to call dynamodb in your lambda, to do this follow the docs.aws.amazon.com link I sent above and find constructor how to do it. Anyway, below is the specific line*
+
+**Sending a Request Using DynamoDB**
+
 ```javascript
-const AWS = require('aws-sdk')
+var dynamodb = new AWS.DynamoDB();
+dynamodb.batchExecuteStatement(params, function (err, data) {
+  if (err) console.log(err, err.stack); // an error occurred
+  else     console.log(data);           // successful response
+});
+##Locking the API Version
+##In order to ensure that the DynamoDB object uses this specific API, you can construct the ##object by passing the apiVersion option to the constructor:
+
+var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+##If you are not in specific region where you deployed the database, its required to put the region like the one below:
+const dynamodb = new AWS.dynamodb({region:'us-west-2', apiVersion: '2012-08-10'});
+
+```
+
+```javascript
+const AWS = require('aws-sdk');
 const dynamodb = new AWS.dynamodb({region:'us-west-2', apiVersion: '2012-08-10'});
 
 exports.handler = (event,context,callback) => {
@@ -54,7 +74,7 @@ var params = {
  });
 ```
 
- **Hence this is the final code in the lambda for putting data**
+ **Hence this is the final code in the lambda for putting data, by the way, I am using Node js 16.X**
 
 ```javascript
 const AWS = require('aws-sdk')
