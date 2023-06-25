@@ -137,7 +137,32 @@ We need to attach new policy
 
 # Using Api Gateway(Request) Data for Item Creation
 
-Now we will tweak our code a little bit
+
+Go to API gateway and check the template for POST request >> Integration Request >> Body Mapping Templates >>
+
+On the script below, we are only forwarding age
+
+```javascript
+#set($inputRoot = $input.path('$'))
+{
+  "age" : $inputRoot.age
+}
+```
+
+WE can live it either blank to forward the whole request or forward height and income as well like this one:
+
+```javascript
+#set($inputRoot = $input.path('$'))
+{
+  "age" : $inputRoot.age,
+  "height" ; $inputRoot.height,
+  "income" ; $inputRoot.income
+}
+```
+
+
+Now we will tweak our code to access mapping template to the lambda function.
+The main problem is now is in the lambda function dynamodb must always accept string and the dynamodb must be the one to format it to wither (S for string and N for number). 
 
 ```javascript
 const AWS = require('aws-sdk')
@@ -147,7 +172,7 @@ exports.handler = (event,context,callback) => {
     const params = {
         Item: {
             "UserId": {
-                S: "user_" + Math.random();
+                S: "user_" + Math.random()
             },
             "Age": {
                 N: event.age
@@ -172,26 +197,5 @@ exports.handler = (event,context,callback) => {
             });
     };
 ```
-And the go to API gateway and check the template for POST request >> Integration Request >> Body Mapping Templates >>
 
-On the script below, we are only forwarding age
-
-```javascript
-#set($inputRoot = $input.path('$'))
-{
-  "age" : $inputRoot.age
-}
-```
-
-WE can live it either blank to forward the whole request or forward height and income as well like this one:
-
-```javascript
-#set($inputRoot = $input.path('$'))
-{
-  "age" : $inputRoot.age,
-  "height" ; $inputRoot.height,
-  "income" ; $inputRoot.income
-}
-```
-
-access mapping template in your lambda function
+sample
