@@ -235,3 +235,82 @@ xhr.send(JSON.stringify({age:28, height:72, income:3500}));
 
 After executing the script to codepen.io, another item added to dynamodb table
 ![Alt text](image-12.png)
+
+# Scanning Data in DynamoDB from Lambda
+
+Previously, when we are not using dynamodb, we have the function below
+
+```javascript
+exports.handler = (event, context, callback) => {
+    const type = event.type;
+    if (type === 'all') {
+        callback(null, 'all data!');
+    } else if (type === 'single') {
+        callback(null,'Just my data');
+    } else {
+        callback(null,'Hello from Lambda')
+    }
+}
+```
+
+now we are adding dynamodb and aws-sdk module in the script the result was below
+
+```javascript
+const AWS = require('aws-sdk')
+const dynamodb = new AWS.DynamoDB({region:'us-west-2', apiVersion: '2012-08-10'});
+
+exports.handler = (event, context, callback) => {
+    const type = event.type;
+    if (type === 'all') {
+        callback(null, 'all data!');
+    } else if (type === 'single') {
+        callback(null,'Just my data');
+    } else {
+        callback(null,'Hello from Lambda')
+    }
+}
+```
+
+Now lets go to https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS.html to check function to get or scan data in dynamodb
+
+Find the scan function there
+
+```javascript
+const AWS = require('aws-sdk')
+const dynamodb = new AWS.DynamoDB({region:'us-west-2', apiVersion: '2012-08-10'});
+
+exports.handler = (event, context, callback) => {
+    const type = event.type;
+    if (type === 'all') {
+        const params = {
+            TableName: "grace-compare-yourself"
+        };
+        dynamodb.scan(params,function(err,data) {
+            if (err) {
+                console.log(err);
+                callback(err);
+            } else {
+                console.log(data);
+                callback(null, data);
+            }
+        });
+    } else if (type === 'single') {
+        callback(null,'Just my data');
+    } else {
+        callback(null,'Hello from Lambda')
+    }
+}
+```
+
+*take note that dynamodb has scan limitation as it can only take upto 1 MB scan limitatiob. If it was already more that 1 MB, it will return with additional attribute which was the last evaluated key. You know you can pick up on the last key and start another scan*
+
+More details in this part of API documentation
+![Alt text](image-13.png)
+
+Now testing it with type all
+
+![Alt text](image-14.png)
+
+You see that it return the table items
+
+![Alt text](image-15.png)
