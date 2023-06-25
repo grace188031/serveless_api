@@ -178,7 +178,7 @@ exports.handler = (event,context,callback) => {
                 N: event.age
             },
             "Height": {
-                N: event.income
+                N: event.height
             },
             "Income": {
                 N: event.income
@@ -197,3 +197,14 @@ exports.handler = (event,context,callback) => {
             });
     };
 ```
+
+Now lets test it 
+
+![Alt text](image-6.png)
+![Alt text](image-7.png)
+
+You will see the response body below {} and status code is 200. This means that it was executed
+![Alt text](image-8.png)
+
+And then, if you look at dynamo table there was a user created with the specific payload from json
+![Alt text](image-9.png)
