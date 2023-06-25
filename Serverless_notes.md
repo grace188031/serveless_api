@@ -150,13 +150,13 @@ exports.handler = (event,context,callback) => {
                 S: "user_" + Math.random();
             },
             "Age": {
-                N: "28"
+                N: event.age
             },
             "Height": {
-                N: "161"
+                N: event.income
             },
             "Income": {
-                N: "2500"
+                N: event.income
             }
         },
         TableName:"grace-compare-yourself"
@@ -195,7 +195,3 @@ WE can live it either blank to forward the whole request or forward height and i
 ```
 
 access mapping template in your lambda function
-
-| hello | renzo |
-|-------|-------|
-| hi    | dsfs  |
