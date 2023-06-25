@@ -208,3 +208,30 @@ You will see the response body below {} and status code is 200. This means that 
 
 And then, if you look at dynamo table there was a user created with the specific payload from json
 ![Alt text](image-9.png)
+
+# Mapping the response and Web Testing
+
+Last section we mapped the api gateway integration request to lambda and then put the data
+to dynamo db
+
+In the integration response, we just pass everything
+![Alt text](image-10.png)
+
+Now going to codepen.io to test the POST API
+
+https://codepen.io/
+
+```javascript
+var xhr = new XMLHttpRequest();
+xhr.open('POST','deploy api url');
+xhr.onreadystatechange = function(event) {
+    console.log(event.target.response);
+};
+xhr.setRequestHeader('Content-Type', 'application/json');
+xhr.send(JSON.stringify({age:28, height:72, income:3500}));
+```
+
+![Alt text](image-11.png)
+
+After executing the script to codepen.io, another item added to dynamodb table
+![Alt text](image-12.png)
