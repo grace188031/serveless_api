@@ -154,15 +154,15 @@ WE can live it either blank to forward the whole request or forward height and i
 ```javascript
 #set($inputRoot = $input.path('$'))
 {
-  "age" : $inputRoot.age,
-  "height" ; $inputRoot.height,
-  "income" ; $inputRoot.income
+  "age" : "$inputRoot.age",
+  "height" ; "$inputRoot.height",
+  "income" ; "$inputRoot.income"
 }
 ```
 
 
 Now we will tweak our code to access mapping template to the lambda function.
-The main problem is now is in the lambda function dynamodb must always accept string and the dynamodb must be the one to format it to wither (S for string and N for number). 
+The main problem is now is in the lambda function dynamodb must always accept string and the dynamodb must be the one to format it to wither (S for string and N for number). To solve the problem, just go to integration request and wrapped the data to quotation like this one "$inputRoot.income".
 
 ```javascript
 const AWS = require('aws-sdk')
@@ -197,5 +197,3 @@ exports.handler = (event,context,callback) => {
             });
     };
 ```
-
-sample
