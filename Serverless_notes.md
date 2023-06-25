@@ -196,5 +196,6 @@ WE can live it either blank to forward the whole request or forward height and i
 
 access mapping template in your lambda function
 
-|hello|renzo|
-|-|-|
+| hello | renzo |
+|-------|-------|
+| hi    | dsfs  |
