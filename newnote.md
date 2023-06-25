@@ -1,3 +1,3 @@
 # Topic
 
-TableName Hello
+table
