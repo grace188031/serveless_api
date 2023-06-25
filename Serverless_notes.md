@@ -137,4 +137,64 @@ We need to attach new policy
 
 # Using Api Gateway(Request) Data for Item Creation
 
-[[TOC]]
+Now we will tweak our code a little bit
+
+```javascript
+const AWS = require('aws-sdk')
+const dynamodb = new AWS.DynamoDB({region:'us-west-2', apiVersion: '2012-08-10'});
+exports.handler = (event,context,callback) => {
+    
+    const params = {
+        Item: {
+            "UserId": {
+                S: "user_" + Math.random();
+            },
+            "Age": {
+                N: "28"
+            },
+            "Height": {
+                N: "161"
+            },
+            "Income": {
+                N: "2500"
+            }
+        },
+        TableName:"grace-compare-yourself"
+    };
+    dynamodb.putItem(params, function(err, data) {
+        if (err) {
+            console.log(err);
+            callback(err); 
+        } else {
+            console.log(data);
+            callback(null, data)
+        }
+            });
+    };
+```
+And the go to API gateway and check the template for POST request >> Integration Request >> Body Mapping Templates >>
+
+On the script below, we are only forwarding age
+
+```javascript
+#set($inputRoot = $input.path('$'))
+{
+  "age" : $inputRoot.age
+}
+```
+
+WE can live it either blank to forward the whole request or forward height and income as well like this one:
+
+```javascript
+#set($inputRoot = $input.path('$'))
+{
+  "age" : $inputRoot.age,
+  "height" ; $inputRoot.height,
+  "income" ; $inputRoot.income
+}
+```
+
+access mapping template in your lambda function
+
+|hello|renzo|
+|-|-|
