@@ -314,3 +314,20 @@ Now testing it with type all
 You see that it return the table items
 
 ![Alt text](image-15.png)
+
+# Improving the IAM Permissions
+
+Its not a good practice to permit all dynamodb as we did on last topic. WE added all policy like the one below
+![Alt text](image-3.png)
+
+We can create a custom polcies
+
+![Alt text](image-16.png)
+
+Adding only putitem
+
+![Alt text](image-17.png)
+
+![Alt text](image-18.png)
+
+![Alt text](image-19.png)
