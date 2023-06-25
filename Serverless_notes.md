@@ -155,8 +155,8 @@ WE can live it either blank to forward the whole request or forward height and i
 #set($inputRoot = $input.path('$'))
 {
   "age" : "$inputRoot.age",
-  "height" ; "$inputRoot.height",
-  "income" ; "$inputRoot.income"
+  "height" : "$inputRoot.height",
+  "income" : "$inputRoot.income"
 }
 ```
 
