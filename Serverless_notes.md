@@ -350,3 +350,81 @@ We can create another policy allowing scanning
 As you see here, you can get and scan data
 
 ![Alt text](image-25.png)
+
+# Restructuring the Fetch data in Lambda
+
+Going back to the code block, we will transform it again to have better scan data when specific url api was triggered
+
+```javascript
+const AWS = require('aws-sdk')
+const dynamodb = new AWS.DynamoDB({region:'us-west-2', apiVersion: '2012-08-10'});
+
+exports.handler = (event, context, callback) => {
+    const type = event.type;
+    if (type === 'all') {
+        const params = {
+            TableName: "grace-compare-yourself"
+        };
+        dynamodb.scan(params,function(err,data) {
+            if (err) {
+                console.log(err);
+                callback(err);
+            } else {
+                console.log(data);
+                callback(null, data);
+            }
+        });
+    } else if (type === 'single') {
+        callback(null,'Just my data');
+    } else {
+        callback(null,'Hello from Lambda')
+    }
+}
+```
+
+
+**Transformed Code:**
+
+```javascript
+const AWS = require('aws-sdk')
+const dynamodb = new AWS.DynamoDB({region:'us-west-2', apiVersion: '2012-08-10'});
+
+exports.handler = (event, context, callback) => {
+    const type = event.type;
+    if (type === 'all') {
+        const params = {
+            TableName: "grace-compare-yourself"
+        };
+        dynamodb.scan(params,function(err,data) {
+            if (err) {
+                console.log(err);
+                callback(err);
+            } else {
+                console.log(data);
+                const items = data.Items.map(
+                    (dataField) => { 
+                        return {age: +dataField.Age.N, height: +dataField.Height.N, income: +dataField.Income.N};
+
+                    }
+                );
+                callback(null, items);
+            }
+        });
+    } else if (type === 'single') {
+        callback(null,'Just my data');
+    } else {
+        callback(null,'Hello from Lambda')
+    }
+}
+```
+
+![Alt text](image-26.png)
+
+We called the map function - java script to transform each element in an array and return a new array which will be stored in the items constant
+map and take function input where datafield as an input and will be added and sent to function automatically {} executed on the element on each array and then transform that {array to returb a transformed item which holds another java script object {which holds age property, the individual item on the map iteration method then acces age dataField.Age.N which holds object as a value}}. Then add (+) to make it as integer
+
+return items in the callback
+
+![Alt text](image-27.png)
+
+We have now restructured the array with much simpley key value pair
