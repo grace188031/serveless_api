@@ -173,3 +173,10 @@ Enjoy!
 *1 It is misaligned because this monospaced font not compatible with CJK.
 
 *2 Need to specific syntax. One cell content have no space, or put between double quotation.
+
+```javascript
+#set(inputRoot = $input.path('$'))
+{
+    "your-age" : $inputRoot
+}
+```

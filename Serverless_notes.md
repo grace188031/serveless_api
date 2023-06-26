@@ -331,3 +331,22 @@ Adding only putitem
 ![Alt text](image-18.png)
 
 ![Alt text](image-19.png)
+
+Remove the dynamodb full access role and put the newly created policy
+allowing only to put items. Hence, when you execute scanning of items again, its a permission denied. You are permitted though to put items into dynamodb
+
+![Alt text](image-20.png)
+
+As you see below, you can put items when executing the script and new item will be added in the table
+
+![Alt text](image-21.png)
+
+We can create another policy allowing scanning
+![Alt text](image-22.png)
+
+![Alt text](image-23.png)
+![Alt text](image-24.png)
+
+As you see here, you can get and scan data
+
+![Alt text](image-25.png)
