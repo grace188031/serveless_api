@@ -578,3 +578,44 @@ Now if you want to return just the age only, you can modify the scpecific script
 As tested, it only return Age, Height and Income only
 
 ![Alt text](image-30.png)
+
+#Testing it from Web and Passing it Correct
+
+# Testing it from Web and Passing it Correct
+
+Go again to codepen.io
+
+```javascript
+var xhr = new XMLHttpRequest();
+xhr.open('GET','Get_api_function/[all,single]');
+xhr.onreadystatechange = function(event) {
+    console.log(event.target.response);
+};
+xhr.setRequestHeader('Content-Type', 'application/json');
+xhr.send();
+```
+
+Execute th get function and we get all array data
+![Alt text](image-31.png)
+
+Testing with single
+
+![Alt text](image-32.png)
+
+Adding parse
+
+```javascript
+var xhr = new XMLHttpRequest();
+xhr.open('GET','Get_api_function/[all,single]');
+xhr.onreadystatechange = function(event) {
+    console.log(JSON.parse(event.target.response));
+};
+xhr.setRequestHeader('Content-Type', 'application/json');
+xhr.send();
+```
+Will get json return
+![Alt text](image-33.png)
+
+![Alt text](image-34.png)
+
+
