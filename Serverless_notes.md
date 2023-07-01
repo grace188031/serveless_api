@@ -659,3 +659,159 @@ Go to IAM and create a new policy
 ![Alt text](image-38.png)
 
 # Deleting Items in DynamoDB Lambda
+
+Lets look the Delete method in the API *https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS.html*
+
+Based on the API
+**To delete an item**
+
+```javascript
+/* This example deletes an item from the Music table. */
+
+ var params = {
+  Key: {
+   "Artist": {
+     S: "No One You Know"
+    }, 
+   "SongTitle": {
+     S: "Scared of My Shadow"
+    }
+  }, 
+  TableName: "Music"
+ };
+ dynamodb.deleteItem(params, function(err, data) {
+   if (err) {
+    console.log(err); // an error occurred
+    callback(err); 
+   } else {
+    console.log(data); // successful response
+    callback(null,data);          
+   }
+ });
+};
+
+   /*
+   data = {
+    ConsumedCapacity: {
+     CapacityUnits: 1, 
+     TableName: "Music"
+    }
+   }
+   */
+ });
+```
+As checked, we need a Key and a TableName
+
+Lets now do the coding:
+
+```javascript
+const AWS = require('aws-sdk')
+const dynamodb = new AWS.DynamoDB({region:'us-west-2', apiVersion: '2012-08-10'});
+
+exports.handler = (event, context, callback) => {
+    // TO DO implement
+    const params = {
+        Key: {
+            "UserId" : {
+                S: "grace-37277"
+            }
+            },
+        TableName: "grace-compare-yourself"
+    };
+    
+dynamodb.deleteItem(params, function(err, data) {
+   if (err) {
+    console.log(err); // an error occurred
+    callback(err); 
+   } else {
+    console.log(data); // successful response
+    callback(null,data);          
+   }
+ });
+};
+
+```
+
+Delete function in codepen.io
+```javascript
+var xhr = new XMLHttpRequest();
+xhr.open(
+  "DELETE",
+  "api_link/grace-api-test"
+);
+xhr.onreadystatechange = function (event) {
+  console.log(JSON.parse(event.target.response));
+};
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.send();
+```
+
+Upon executing he API, the grace-37277 was deleted
+
+# Mapping DynamoDB Responses
+
+For example, going to Method Response of the API
+We have "application/json" setting here and empty model
+![Alt text](image-39.png)
+
+We can create a model though for that specific array
+change the type to array
+
+Model:GraceCompareDataArray
+
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "GraceCompareData",
+  "type": "array",
+  "items": {
+      "type": "object",
+      "properties": {
+      "age": {"type": "integer"},
+      "height": {"type": "integer"},
+      "income": {"type": "integer"}
+  },
+  "required": ["age", "height", "income"]
+}
+}
+
+![Alt text](image-40.png)
+
+Then testing the API
+
+![Alt text](image-41.png)
+
+getting the user_0.2807010910026606 data
+![Alt text](image-42.png)
+
+And then assign the model to method response
+
+And in the integration response if we edit body mapping template to user GraceCompareDataArray
+
+AS you see here, it transform anything lambda gives us into Array
+
+```javascript
+#set($inputRoot = $input.path('$'))
+[
+##TODO: Update this foreach loop to reference array from input json
+#foreach($elem in $inputRoot)
+ {
+  "age" : $elem.Age,
+  "height" : $elem.Height,
+  "income" : $elem.Income
+} 
+#if($foreach.hasNext),#end
+#end
+]
+```
+
+if we check again, we get back array result however ,its not for single item and has no value
+
+![Alt text](image-43.png)
+
+To return an array for that single item, we need to modify the code as well putting a bracket
+     callback(null, **[**{age : +data.Item.Age.N, height : +data.Item.Height.N, income : +data.Item.Income.N}**]**);
+
+Hence when we test again after modiying our get function
+![Alt text](image-44.png)
+
+Now, the response is supoer clear with array objects
