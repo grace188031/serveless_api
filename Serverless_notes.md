@@ -619,3 +619,43 @@ Will get json return
 ![Alt text](image-34.png)
 
 
+# Preparing Delete Permissions
+
+exports.handler = (event, context, callback) => {
+    callback(null, 'Deleted!');
+};
+
+*Method Request*
+Dafault
+
+*Integration Request*
+![Alt text](image-35.png)
+No mapping template
+
+*Integration Response*
+Default
+
+*Method Response*
+Default
+
+
+Current Permission
+*grace-delete-cy-data function*
+
+Setting up the grace-delete-cy-data code
+
+```javascript
+const AWS = require('aws-sdk')
+const dynamodb = new AWS.DynamoDB({region:'us-west-2', apiVersion: '2012-08-10'});
+
+```
+
+Go to IAM and create a new policy
+
+![Alt text](image-36.png)
+
+![Alt text](image-37.png)
+
+![Alt text](image-38.png)
+
+# Deleting Items in DynamoDB Lambda
