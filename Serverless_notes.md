@@ -428,3 +428,153 @@ return items in the callback
 ![Alt text](image-27.png)
 
 We have now restructured the array with much simpley key value pair
+
+# Getting a Single Data from DYNAMO DB Lambda
+
+We will further restaructure our get function
+
+*Previous code below*
+*index.js*
+```javascript
+
+const AWS = require('aws-sdk')
+const dynamodb = new AWS.DynamoDB({region:'us-west-2', apiVersion: '2012-08-10'});
+
+exports.handler = (event, context, callback) => {
+    const type = event.type;
+    if (type === 'all') {
+        const params = {
+            TableName: "grace-compare-yourself"
+        };
+        dynamodb.scan(params,function(err,data) {
+            if (err) {
+                console.log(err);
+                callback(err);
+            } else {
+                console.log(data);
+                const items = data.Items.map(
+                    (dataField) => { 
+                        return {age: +dataField.Age.N, height: +dataField.Height.N, income: +dataField.Income.N};
+
+                    }
+                );
+                callback(null, items);
+            }
+        });
+    } else if (type === 'single') {
+        callback(null,'Just my data');
+    } else {
+        callback(null,'Hello from Lambda')
+    }
+}
+```
+
+*Now adding logic to get specific data*
+
+
+Based from the documentation of GetItem class in Dynamod DB SDK >> *https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html*
+
+```javascript
+/* This example retrieves an item from the Music table. The table has a partition key and a sort key (Artist and SongTitle), so you must specify both of these attributes. */
+
+ var params = {
+  Key: {
+   "Artist": {
+     S: "Acme Band"
+    }, 
+   "SongTitle": {
+     S: "Happy Day"
+    }
+  }, 
+  TableName: "Music"
+ };
+ dynamodb.getItem(params, function(err, data) {
+   if (err) console.log(err, err.stack); // an error occurred
+   else     console.log(data);           // successful response
+   /*
+   data = {
+    Item: {
+     "AlbumTitle": {
+       S: "Songs About Life"
+      }, 
+     "Artist": {
+       S: "Acme Band"
+      }, 
+     "SongTitle": {
+       S: "Happy Day"
+      }
+    }
+   }
+   */
+ });
+```
+
+```javascript
+const AWS = require('aws-sdk')
+const dynamodb = new AWS.DynamoDB({region:'us-west-2', apiVersion: '2012-08-10'});
+
+exports.handler = (event, context, callback) => {
+    const type = event.type;
+    if (type === 'all') {
+        const params = {
+            TableName: "grace-compare-yourself"
+        };
+        dynamodb.scan(params,function(err,data) {
+            if (err) {
+                console.log(err);
+                callback(err);
+            } else {
+                console.log(data);
+                const items = data.Items.map(
+                    (dataField) => { 
+                        return {age: +dataField.Age.N, height: +dataField.Height.N, income: +dataField.Income.N};
+
+                    }
+                );
+                callback(null, items);
+            }
+        });
+    } else if (type === 'single') {
+        const params = {
+            Key : {
+                "UserId" : {
+                    S : "grace-37277"
+                }
+            },
+            TableName: "grace-compare-yourself"
+        };
+        dynamodb..getItem(params, function(err, data) {
+            if (err) {
+                console.log(err);
+                callback(err);
+            } else {
+                console.log(data);
+                const
+                callback(null,data);
+            }
+        });
+    } else {
+        callback(null,'Something went wrong')
+    }
+}
+```
+
+After that configure test event and set it to single. The result is for user id grace-37277 only
+![Alt text](image-29.png)
+![Alt text](image-28.png)
+
+Now if you want to return just the age only, you can modify the scpecific script here
+
+```javascript
+        dynamodb..getItem(params, function(err, data) {
+            if (err) {
+                console.log(err);
+                callback(err);
+            } else {
+                console.log(data);
+                callback(null, {age : +data.Item.Age.N, height : +data.Item.Height.N, income : +data.Item.Income.N});
+```
+
+As tested, it only return Age, Height and Income only
+
+![Alt text](image-30.png)
