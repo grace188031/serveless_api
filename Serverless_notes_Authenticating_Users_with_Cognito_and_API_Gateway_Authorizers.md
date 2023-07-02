@@ -269,3 +269,41 @@ Cognito User Pools Developer Guide: http://docs.aws.amazon.com/cognito/latest/de
 As always, also don't forget to check the pricing if you plan on expanding your usage: https://aws.amazon.com/cognito/pricing/
 
 ![Alt text](image-61.png)
+
+# Cognito User Pools And Federated Identities
+
+![Alt text](image-62.png)
+
+User Pool - complete solution for people wit no complete authentication without using third party
+Federated Identities - connect 3rd part providers like fb and google for IAM credentials
+
+Example upload file to S3 bucket
+
+
+# Creating a Cognito User Pool
+
+![Alt text](image-63.png)
+
+![Alt text](image-64.png)
+
+![Alt text](image-65.png)
+
+![Alt text](image-66.png)
+
+Configure sign-up experience - Leave as default
+
+![Alt text](image-67.png)
+![Alt text](image-68.png)
+
+
+![Alt text](image-69.png)
+
+# Understanding the Cognito AuthFlow
+
+**Authentication Flow (User Pools)**
+
+USER(using application) => Signing up to user pool => store user to user pool => COnfirmation prompt(verify email) => Mark as confirmed => Can be used for signing up => Sigin to user pool an authenticate => Validate user in the database => Cognito issues Tokens to the frontend application => Identity, Access and refresh tokens => Authenticate requests => Backend => Autorizers verifying if identity token is alright
+
+Access token can be used to send to cognito get change some users attributes
+refresh token get new identity and access tokens because tokens not leavigfor long only 1 hour must not be stolen  must used https and crossed site scripting - tokens must be safe. 
+
