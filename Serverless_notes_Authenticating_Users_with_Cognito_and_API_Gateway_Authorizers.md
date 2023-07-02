@@ -171,3 +171,75 @@ setting header to deny has error 403
 
 now for invalid header, its error 401
 ![Alt text](image-58.png)
+
+# Retrieving Users using custom Authorizers
+
+To retrieve specific Users in the return request, we use the POST method's Integration Request'd Body mapping template
+
+We will now add $context.authorizer.principalId (reference- https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html) to access the principal Id
+
+```javascript
+#set($inputRoot = $input.path('$'))
+{
+  "age" : "$inputRoot.age",
+  "height" : "$inputRoot.height",
+  "income" : "$inputRoot.income",
+  "userId" : "$context.authorizer.principalId"
+}
+```
+Going back to the lambda function the POST API used, we can now reference the userId because it was being added in the body mapping template of the integration request
+
+```javascript
+const AWS = require('aws-sdk');
+
+const dynamodb = new AWS.DynamoDB({region:'us-west-2', apiVersion: '2012-08-10'});
+
+exports.handler = (event,context,callback) => {
+    
+    const params = {
+        Item: {
+            "UserId": {
+                S: event.userId //from Math.random() to event.userId
+            },
+            "Age": {
+                N: event.age
+            },
+            "Height": {
+                N: event.height
+            },
+            "Income": {
+                N: event.income
+            }
+        },
+        TableName:"grace-compare-yourself"
+    };
+    
+    
+    dynamodb.putItem(params, function(err, data) {
+        if (err) {
+            console.log(err);
+            callback(err); 
+        } else {
+            console.log(data);
+            callback(null, data);
+        }
+            });
+    };
+```
+
+After that, redeploy the API and test the added data
+
+Upon testing in codepen.io, the user authenticated in lambda authorizer  was now added
+
+```javascript
+var xhr = new XMLHttpRequest();
+xhr.open('POST','https://r1quafg4dh.execute-api.us-west-2.amazonaws.com/dev-grace/grace-api-test');
+xhr.onreadystatechange = function(event) {
+    console.log(event.target.response);
+};
+xhr.setRequestHeader('Content-Type', 'application/json');
+xhr.setRequestHeader('Authorization', 'allow');
+xhr.send(JSON.stringify({age:284, height:7452, income:3500}));
+
+```
+![Alt text](image-59.png)
