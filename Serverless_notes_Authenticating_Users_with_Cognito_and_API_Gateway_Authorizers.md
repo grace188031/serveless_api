@@ -243,3 +243,29 @@ xhr.send(JSON.stringify({age:284, height:7452, income:3500}));
 
 ```
 ![Alt text](image-59.png)
+
+# What is AWS Cognito
+
+Amazon Cognito is very useful in WEb App and Mobile App
+Issue not only temp token but also temporary IAM role
+
+>Define how to Authenticate Users
+> Store Authe Token on User Devices
+> 
+
+> Cognito User Pools
+> Thirdparty Provider like Facebook and Google
+
+![Alt text](image-60.png)
+
+
+AWS Cognito: Useful Resources & Links
+In this module, we're using AWS Cognito, specifically its "User Pools" feature.
+
+Learn more about AWS Cognito and this feature with the following links:
+
+Overview: https://aws.amazon.com/cognito/
+Cognito User Pools Developer Guide: http://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools.html
+As always, also don't forget to check the pricing if you plan on expanding your usage: https://aws.amazon.com/cognito/pricing/
+
+![Alt text](image-61.png)
